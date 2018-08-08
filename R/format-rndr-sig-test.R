@@ -107,7 +107,6 @@ rndr_ods <- function(x, digits = default_stp25("digits", "r")) {
 #' @examples
 #'   rndr_CI(matrix(c(NA, 1:10, NA), ncol=2))
 #'
-#'
 rndr_CI <- function(ci,
                     digits = default_stp25("digits", "r"),
                     sep =    default_stp25("sep_element"),
@@ -127,7 +126,6 @@ rndr_CI <- function(ci,
 
 #' @rdname rndr_
 #' @export
-#'
 #'
 rndr_ods_CI<- function(ci,
                        digits =  default_stp25("digits", "r"),
@@ -258,6 +256,7 @@ rndr_T<- function(F_val, df1, p=NULL){
 #' @export
 #' @examples
 #' rndr_H(25.45, 45, .0045)
+#' 
 rndr_H<- function(F_val, df1, p=NULL){
   F_val <-paste0("H", rndr_df(df1), "=", rndr_Test_Statistic(F_val))
   if(is.null(p)) F_val
@@ -265,6 +264,8 @@ rndr_H<- function(F_val, df1, p=NULL){
 }
 
 #' @rdname rndr_
+#' @export
+#' 
 rndr_BP<- function(F_val, df1, p=NULL){
   F_val <-paste0("BP", rndr_df(df1), "=", rndr_Test_Statistic(F_val))
   if(is.null(p)) F_val
@@ -273,6 +274,8 @@ rndr_BP<- function(F_val, df1, p=NULL){
 
 
 #' @rdname rndr_
+#' @export
+#' 
 rndr_DW<- function(F_val, df1, p=NULL){
   F_val <-paste0("DW", #rndr_df(df1),
                  "=", rndr_Test_Statistic(F_val))
@@ -360,6 +363,7 @@ rndr_fischer<-function(x, p){
 }
 
 #' @rdname rndr_
+#' @export
 #' @description CFA Confirmatorische Faktoranalyse
 #'
 #' Backhaus Multivariate Analysemethoden 11 AuflageSeite 383
@@ -373,6 +377,7 @@ rndr_gfi_cfa <- function(x) as.character(
 
 
 #' @rdname rndr_
+#' @export
 #' @description AGIF Adjusted-Goodness-of-Fit-Index
 #' @examples
 #' rndr_agfi_cfa(c(1,.9,.89))
@@ -382,6 +387,7 @@ rndr_agfi_cfa <- function(x) as.character(
       c("nicht akzeptabel", "gut")))
 
 #' @rdname rndr_
+#' @export
 #' @description SRMR
 #' @examples
 #' rndr_rmsea_cfa(c(1,.9,.89))
@@ -391,6 +397,7 @@ rndr_rmsea_cfa <- function(x) as.character(
       c("gut", "nicht akzeptabel")))
 
 #' @rdname rndr_
+#' @export
 #' @description  Chisq_cfa:  Moosbrugger, Kelava 2012 Testtheorie 2. Auflage Seite 339
 #' CHISQ Chi-Quadrat/df 0,2, 3
 #' @examples
@@ -402,6 +409,7 @@ rndr_Chisq_cfa <- function(x, df=1) as.character(
 )
 
 #' @rdname rndr_
+#' @export
 #' @description RMSEA Root-Mean-Square-Error of Approximation 0, 0.050, 0.080
 #' @examples
 #' rndr_rmsea_cfa(c(0, 0.050, 0.080, .051, .081) )
@@ -411,6 +419,7 @@ rndr_rmsea_cfa <- function(x) as.character(
       c("gut", "akzeptabel", "nicht akzeptabel")))
 
 #' @rdname rndr_
+#' @export
 #' @description CFI Comparative-Fit-Index .970-1.00, .950-.969
 #' @examples
 #' rndr_cfi_cfa(c(.970,1.00, .950-.969,.8))
@@ -421,6 +430,7 @@ rndr_cfi_cfa <- function(x) as.character(
       right=FALSE))
 
 #' @rdname rndr_
+#' @export
 #' @description NFI Normed-Fit-Index .950-1.00, .900-.949
 #' @examples
 #' rndr_nfi_cfa(c(.950, 1.00, .900,  .949))
@@ -430,38 +440,5 @@ rndr_nfi_cfa <- function(x) as.character(
       c( -Inf, .900,  0.950, Inf),
       c("nicht akzeptabel","akzeptabel", "gut"),
       right=FALSE))
-
-
-
-
-
-
-
-
-
-
-
-# default_stp25()
-# default_stp25("lead.zero")
-# default_stp25("digits", "p")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

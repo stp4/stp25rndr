@@ -5,7 +5,7 @@
 #' @param x Objekt kann Vector data.frame oder list sein
 #' @param digits Nachkommastellen als vektor oder liste
 #' @param lead.zero,drop0leading Null am  Anfang an formatC()
-#' @param type,format format an formatC()
+#' @param format format an formatC()
 #' @param scientific,nsmall format an formatC()
 #' @param drop0trailing  Nullen am Ende an formatC()
 #' @param decimal.mark Kommatrennzeichen an formatC()
@@ -13,77 +13,7 @@
 #'
 #' @return Gleiches objekt wie der Input aber mit Character.
 #' @export
-#'
-#' @examples
-#' #'
-#' x<- rnorm(10)
-#' df <- data.frame(Item=c("a", "b", "c"),
-#'                  x=x[1:3],
-#'                  x2=c(1.2,2.3,.3),
-#'                  beta=  c(.22,.13, NA),
-#'                  x3=c(.42,.03,.003),
-#'                  p.value=c(0.0002456,0.0398,.256))
-#'
-#' mx1<- as.matrix(df[,-1])
-#' mx2<-matrix(rnorm(10), ncol=2)
-#' lx<- list(a=1:5, b=rnorm(10))
-#'
-#' # Tvl<- c(1.0145, 25.45)
-#' # Df<- c(45,44.14)
-#' # Pvl<-c(0.0045,0.547863)
-#' # rndr_T(Tvl, Df, Pvl)
-#' #
-#' #
-#' #
-#' # digits = 2
-#' # lead.zero = TRUE
-#' # type = "digits"
-#' # scientific = FALSE
-#' # nsmall =  ifelse(is.null(digits), 0L,  digits)
-#' #
-#' # formatC(Tvl, digits = 2,
-#' #         format = "fg",
-#' #         decimal.mark = getOption("OutDec")
-#' # )
-#' #
-#' #
-#' # glue(' T<sub>({
-#' #      formatC(Df, digits = 2,
-#' #      format = "f",
-#' #      decimal.mark = getOption("OutDec") )
-#' #      })</sub>={
-#' #      formatC(Tvl, digits = 2,
-#' #      format = "f",
-#' #      decimal.mark = getOption("OutDec"))
-#' #      }, p={
-#' #      formatC(Pvl, digits = 3,
-#' #      format = "g", drop0trailing = TRUE,
-#' #      decimal.mark = getOption("OutDec"))
-#' #      }')
-#' #
-#' #
-#' #
-#'
-#' sprintf("%.2f", x)
-#' formatC(x, decimal.mark =",")
-#' format(x, decimal.mark =",")
-#' Format2(x, OutDec=",")
-#' Format2(x, decimal.mark=",")
-#' Format2(x )
-#'
-#' Format2(df, digits=c(0,2,1,2,3,3),
-#'         format=c("f","f","g","f","f","f"),
-#'         drop0leading=c(F,F,F,F,F,T) )
-#'
-#' Format2(c(0.345,2.45,5.1,2.67,39.332,.83), digits=c(0,2,1,2,3,3),
-#'         format=c("f","f","g","f","f","f"),
-#'         drop0leading=c(F,F,F,F,F,T) )
-#'
-#'
-#'
-#' Format2(lx, list(c(0), c(1,1,4,3)))
-#'
-#'
+
 Format2 <- function(x, ...) {
   UseMethod("Format2")
 }
@@ -141,7 +71,43 @@ make_format <- function(x,
                         na.symbol="") {
 
  # unnoetig x <- round(x, digits)
+  
+  
+  
+  # 
+  # formatC(x, 
+  #         digits = NULL, 
+  #         width = NULL,
+  #         format = NULL, 
+  #         flag = "", 
+  #         mode = NULL,
+  #         big.mark = "", 
+  #         big.interval = 3,
+  #         small.mark = "", 
+  #         small.interval = 5,
+  #         decimal.mark = ".", 
+  #         preserve.width = "individual")
+  # 
+  # format(x, 
+  #        trim = FALSE, 
+  #        digits = NULL, 
+  #        nsmall = 0L,
+  #        justify = c("left", "right", "centre", "none"),
+  #        width = NULL, 
+  #        na.encode = TRUE, 
+  #        scientific = NA,
+  #        big.mark   = "",   
+  #        big.interval = 3L,
+  #        small.mark = "", 
+  #        small.interval = 5L,
+  #        decimal.mark = getOption("OutDec"),
+  #        zero.print = NULL, 
+  #        drop0trailing = FALSE )
 
+  
+  
+  
+  # formatC ist langsamer aber einfacher zum handhaben
   r <- formatC(
     x,
     digits = digits,
@@ -164,7 +130,16 @@ make_format <- function(x,
 #' @export
 #' @examples
 #'
-#'
+#'  x<- rnorm(10)
+#' df <- data.frame(Item=c("a", "b", "c"),
+#'                  x=x[1:3],
+#'                  x2=c(1.2,2.3,.3),
+#'                  beta=  c(.22,.13, NA),
+#'                  x3=c(.42,.03,.003),
+#'                  p.value=c(0.0002456,0.0398,.256))
+#' 
+#' mx1<- as.matrix(df[,-1])
+#' mx2<-matrix(rnorm(10), ncol=2)
 #' #- matrix ---------------------------
 #' res <- Format2(mx1, digits=2)
 #' cat("\n in: matrix out:", class(res)," \n")
@@ -177,9 +152,9 @@ make_format <- function(x,
 #'
 Format2.matrix <- function(x, digits=2,
                            lead.zero = TRUE,
-                           type = "digits",
+                          # type = "digits",
                            drop0leading  = !lead.zero,
-                           format = if(type[1]=="digits") "f" else "g",
+                           format = "f", #if(type[1]=="digits") "f" else "g",
                            ...){
   if(!is.matrix(x)) x <- matrix(x)  # Fehler abfangen wenn funktion direkt aufgerufen wird
   if(!is.numeric(x[1,1])) return(x)
@@ -193,7 +168,7 @@ Format2.matrix <- function(x, digits=2,
   i <- 0
   apply(x,2, function(q) {
     i <<- i + 1
-    Format2(q,
+    Format2.default(q,
             digits = digits[i],
             format = format[i],
             drop0leading = drop0leading[i]
@@ -209,7 +184,7 @@ Format2.matrix <- function(x, digits=2,
 #' @examples
 #'
 #' #- tbl_df/data.frame ----------------------
-#' Format2(tribble::tbl_df(df), digits=3)
+#' #Format2(tribble::tbl_df(df), digits=3)
 #'
 Format2.tbl_df <- function(x, ...) Format2.data.frame(data.frame(x), ...)
 
@@ -218,7 +193,13 @@ Format2.tbl_df <- function(x, ...) Format2.data.frame(data.frame(x), ...)
 #' @export
 #' @examples
 #'
-#'
+#'  x<- rnorm(10)
+#' df <- data.frame(Item=c("a", "b", "c"),
+#'                  x=x[1:3],
+#'                  x2=c(1.2,2.3,.3),
+#'                  beta=  c(.22,.13, NA),
+#'                  x3=c(.42,.03,.003),
+#'                  p.value=c(0.0002456,0.0398,.256))
 #' #- data.frame ----------------------
 #' res <- Format2(df[,-1], digits=2, FALSE)
 #' cat("\n in: data.drame out:", class(res)," \n")
@@ -228,9 +209,9 @@ Format2.tbl_df <- function(x, ...) Format2.data.frame(data.frame(x), ...)
 Format2.data.frame <- function(x,
                                digits = 2,
                                lead.zero = TRUE,
-                               type = "digits",
+                              # type = "digits",
                                drop0leading  = !lead.zero,
-                               format = if(type[1]=="digits") "f" else "g",
+                               format =  "f", #if(type[1]=="digits") "f" else "g",
                                ...) {
   input <- length(x)
   if (!input)
@@ -245,7 +226,7 @@ Format2.data.frame <- function(x,
                             i <<- i + 1
 
                             if (is.numeric(q) | is.integer(q))
-                              Format2(q,
+                              Format2.default(q,
                                       digits = digits[i],
                                       format = format[i],
                                       drop0leading = drop0leading[i])
@@ -265,7 +246,7 @@ Format2.data.frame <- function(x,
 #' @export
 #' @examples
 #'
-#'
+#'lx<- list(a=1:5, b=rnorm(10))
 #'
 #' #- list --------------------------
 #' res <- Format2(lx, 2, FALSE)
@@ -275,9 +256,9 @@ Format2.data.frame <- function(x,
 Format2.list <- function(x,
                          digits = NULL,
                          lead.zero = TRUE,
-                         type = "digits",
+                        # type = "digits",
                          drop0leading  = !lead.zero,
-                         format = if(type[1]=="digits") "f" else "g",
+                         format = "f",#if(type[1]=="digits") "f" else "g",
                          ...) {
   n_cols <- length(x)
   if (!n_cols)   return(x)
@@ -287,16 +268,16 @@ Format2.list <- function(x,
  n<- length( x[[i]])
 
     if(!length(digits)==1) {
-      if(is.list(digits)) ndigits <-   ergaenze_vector(digits[[i]], n)
+      if(is.list(digits)) ndigits <- ergaenze_vector(digits[[i]], n)
     } else ndigits<- digits
 
     if(!length(drop0leading)==1) {
-      if(is.list(drop0leading)) ndrop0leading <-   ergaenze_vector(drop0leading[[i]], n)
+      if(is.list(drop0leading)) ndrop0leading <- ergaenze_vector(drop0leading[[i]], n)
     }   else ndrop0leading<- drop0leading
 
 
     if(!length(format)==1) {
-      if(is.list(format)) format <-   nergaenze_vector(format[[i]], n)
+      if(is.list(format)) nformat <- ergaenze_vector(format[[i]], n)
     }
    else nformat <- format
 
@@ -317,29 +298,26 @@ Format2.list <- function(x,
 #' @export
 #' @examples
 #'
-#'
-#'
-#' # #- vector -------------------------
-#' # res<-Format2(x, digits=2, FALSE)
-#' # cat("\n in: numeric out:", class(res)," \n")
-#' # res
-#' # Format2(as.character(x), digits=3)
-#' # Format2(factor(x), digits=3)
+#'  x<- rnorm(10)
+#'  
+#'  #- vector -------------------------
+#'  res<-Format2(x, digits=2, FALSE)
+#'  cat("\n in: numeric out:", class(res)," \n")
+#'  res
+#'  Format2(as.character(x), digits=3)
+#'  Format2(factor(x), digits=3)
 #'
 Format2.default  <- function(x,
                              digits = 2,
                              lead.zero = TRUE,
-                             type = "digits",
+                             #    type = "digits",
                              #signif
                              scientific = FALSE,
                              nsmall =  ifelse(is.null(digits), 0L,  digits),
                              #-- wenn erster wert 0 dann trotzdem digits
                              drop0leading  = !lead.zero,
                              drop0trailing = FALSE,
-                             format = if (type == "digits")
-                               "f"
-                             else
-                               "g",
+                             format = "f", #if (type == "digits") "f" else "g",
                              decimal.mark = getOption("OutDec"),
                              ...)
 {

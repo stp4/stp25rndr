@@ -4,7 +4,7 @@
 #' @examples
 #'
 #'rndr_P(c(1,.25,.08,0.05,0.01,0.0001))
-
+#'
 rndr_P <-
   function(x,
            include.symbol = TRUE,
@@ -23,7 +23,6 @@ rndr_P <-
            symbol.trailing = ""
 
            ) {
-
 
     if (missing(x))
       return(
@@ -66,11 +65,9 @@ rndr_P <-
 
 
 
-
-
-
 #' @rdname rndr_
 #' @export
+#' 
 rndr_Stars <- function (x,
                         stars.value =  default_stp25("stars.value", "p"),
                         stars.symbols = default_stp25("stars.symbols", "p")
@@ -127,6 +124,7 @@ rndr_Effect_Size <- function(x,
 
 #' @rdname rndr_
 #' @export
+#' 
 rndr_Test_Statistic <-
   function (x,
             digits = default_stp25("digits", "Fstat")[1],
@@ -138,5 +136,4 @@ rndr_Test_Statistic <-
             drop0leading  = drop0leading,
             ...)
   }
-
 
