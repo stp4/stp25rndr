@@ -41,8 +41,12 @@ test_that("matrix", {
   )
 
   resm <- rndr_percent(n=mx, return_as_vector=FALSE)
+  
+  
   expect_that(is.matrix(resm) , is_true())
   expect_equal(dim(resm), dim(mx))
+  expect_equal( resm[1,2],
+  "43% (45)")
 
  res<- rndr_percent2(n=mx)
   # Source        A        B        C
@@ -65,7 +69,11 @@ x <- with(warpbreaks, table(wool))
 expect_equal(
 rndr_percent(n=x, digits=2, return_as_vector=TRUE),
 c("50.00% (27)", "50.00% (27)"))
-expect_that(is.matrix(rndr_percent(n=x, digits=2, return_as_vector=FALSE)),
+
+xt <- rndr_percent(n=x, digits=2, return_as_vector=FALSE)
+
+expect_equal(xt[1,1], c(A="50.00% (27)"))
+expect_that(is.matrix(xt),
             is_true())
 #rndr_percent2(n=x, digits=2, return_as_vector=TRUE)
 expect_that(is.data.frame(rndr_percent2(n=x, digits=2)), is_true())
@@ -79,7 +87,10 @@ test_that("xtabs", {
   expect_equal(
     rndr_percent(n=x, digits=2, return_as_vector=TRUE),
     c("50.00% (27)", "50.00% (27)"))
-  expect_that(is.matrix(rndr_percent(n=x, digits=2, return_as_vector=FALSE)),
+  
+  xt <-rndr_percent(n=x, digits=2, return_as_vector=FALSE)
+  expect_equal(xt[1,1], c(A="50.00% (27)"))
+  expect_that(is.matrix(xt),
               is_true())
   #rndr_percent2(n=x, digits=2, return_as_vector=TRUE)
   expect_that(is.data.frame(rndr_percent2(n=x, digits=2)), is_true())
@@ -115,6 +126,8 @@ test_that("rndr_percent2 xtabs same result as table", {
 x1<- with(airquality, table(OzHi = Ozone > 80, Month))
 x2<- xtabs( ~I(Ozone > 80) + Month, airquality)
 #rndr_percent(n=x1)
+#rndr_percent2(n=x1)[1,2]
+
 expect_equal(rndr_percent2(n=x1),rndr_percent2(n=x2))
 
 
