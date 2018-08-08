@@ -1,2 +1,2 @@
 # stp25rndr
-Format Tabel
+Zahlen nach APA-Style formatieren.
